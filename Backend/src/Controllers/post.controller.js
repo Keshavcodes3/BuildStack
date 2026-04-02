@@ -2,6 +2,7 @@ import { uploadToCloudinary } from "../Utils/uploadToCloudinary.js";
 import postModel from "../Models/post.model.js";
 import userModel from "../Models/user.model.js";
 import followModel from "../Models/follow.model.js";
+import likeModel from "../Models/like.model.js";
 
 /**
  * Create a new post/project.
@@ -321,6 +322,71 @@ export const deleteProjectController = async (req, res) => {
             message: "Project deleted successfully",
             success: true,
         });
+
+    } catch (err) {
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false,
+            error: err.message
+        });
+    }
+}
+
+
+
+export const likeProjectController = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const projectId = req.params.id;
+        const user = await userModel.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                message: "User not authenticated",
+                success: false,
+                error: "User not found"
+            })
+        }
+        const project = await postModel.findById(projectId)
+        if (!project) {
+            return res.status(400).json({
+                message: "Project not found",
+                success: false,
+                error: "Project dont exist"
+            })
+        }
+        const Like = await likeModel.findOne({
+            post: projectId,
+            user: userId
+        })
+        //&DisLike if exist
+        if (Like) {
+            await Promise.all([
+                likeModel.deleteOne({ _id: existingLike._id }),
+                postModel.findByIdAndUpdate(projectId, {
+                    $inc: { likesCount: -1 }
+                })
+            ])
+            return res.status(200).json({
+                message: "Like created successfully",
+                error: null,
+                success: true
+            })
+        } else {
+            await Promise.all([
+                likeModel.create({
+                    post: projectId,
+                    user: userId
+                }),
+                postModel.findByIdAndUpdate(projectId, {
+                    $inc: { likesCount: 1 }
+                })
+            ])
+            return res.status(201).json({
+                message: "Like disliked successfully",
+                error: null,
+                success: true
+            })
+        }
 
     } catch (err) {
         return res.status(500).json({

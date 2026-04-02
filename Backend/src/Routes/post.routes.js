@@ -1,6 +1,6 @@
 import upload from '../Utils/multer.js'
 import express from 'express'
-import { createProjectController, getProjectsController, getSingleProjectController, getUserProjectsController } from '../Controllers/post.controller.js'
+import { createProjectController, getProjectsController, getSingleProjectController, getUserProjectsController, likeProjectController } from '../Controllers/post.controller.js'
 import { IdentifyUser } from '../Middlewares/user.middleware.js'
 const postRoutes = express.Router()
 
@@ -44,5 +44,8 @@ postRoutes.get('/projects/:id/projects', IdentifyUser, getUserProjectsController
  * @param {string} postId - Post ID
  */
 postRoutes.get('/projects/:postId', IdentifyUser, getSingleProjectController)
+
+
+postRoutes.post('/project/:id',IdentifyUser,likeProjectController)
 
 export default postRoutes 

@@ -22,6 +22,10 @@ const postSchema = new mongoose.Schema({
         default: 0
     },
     tags: [String],
+    likesCount:{
+        type:Number,
+        default:0
+    },
     visibility: {
         type: String,
         enum: ['private', 'public'],
