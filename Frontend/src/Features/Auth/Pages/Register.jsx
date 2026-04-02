@@ -15,7 +15,6 @@ const Register = () => {
   const navigate = useNavigate();
   const { handleRegisterUser } = useAuth();
 
-  // Track which part of the form we are on
   const [step, setStep] = useState(1);
 
   const [form, setform] = useState({
@@ -24,221 +23,208 @@ const Register = () => {
     email: "",
     gender: "",
     bio: "",
+    avatar: null,
+    avatarPreview: "",
   });
 
+  // 🔹 Input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setform((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 🔹 Avatar upload
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setform((prev) => ({
+        ...prev,
+        avatar: file,
+        avatarPreview: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+  // 🔹 Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (step === 1) {
-      setStep(2); // Move to profile details
+      setStep(2);
       return;
     }
-    try {
-      const data = await handleRegisterUser(form);
 
+    try {
+        const userData={
+          userName:form.userName,
+          email:form.email,
+          password:form.password,
+          gender:form.gender,
+          bio:form.bio,
+          avatar:form.avatar
+        }
+      await handleRegisterUser(userData);
+      console.log(userData)
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-6 overflow-hidden">
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-6">
       <div className="w-full max-w-5xl bg-white rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[650px]">
-        {/* Left Branding Panel (Static) */}
+        {/* LEFT PANEL */}
         <div className="md:w-1/2 relative bg-black p-12 flex flex-col justify-between text-white">
           <div className="absolute inset-0 opacity-50">
             <img
-              src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80"
-              alt="Tech"
+              src="https://images.unsplash.com/photo-1550745165-9bc0b252726f"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
           </div>
-          <div className="relative z-10 font-bold text-2xl tracking-tighter italic">
+
+          <div className="relative z-10 text-2xl font-bold italic">
             BuildStack
           </div>
+
           <div className="relative z-10">
-            <div className={`h-1 ${step==1?"w-10":"w-30"} bg-orange-500 mb-6 transition duration-200`} />
-            <h1 className="text-4xl font-bold leading-tight mb-4">
-              Step {step} of 2
-            </h1>
+            <div
+              className={`h-1 ${
+                step === 1 ? "w-10" : "w-32"
+              } bg-orange-500 mb-6 transition-all`}
+            />
+            <h1 className="text-4xl font-bold mb-4">Step {step} of 2</h1>
             <p className="text-slate-400 text-sm">
-              {step === 1
-                ? "Secure your account with your credentials."
-                : "Tell us a bit more about yourself."}
-                
+              {step === 1 ? "Secure your account" : "Complete your profile"}
             </p>
           </div>
         </div>
 
-        {/* Right Form Panel */}
+        {/* RIGHT PANEL */}
         <div className="flex-1 p-10 md:p-16 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">
+          <h2 className="text-3xl font-bold text-slate-900">
             {step === 1 ? "Create account" : "Complete Profile"}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5 mt-6">
             {step === 1 ? (
-              /* --- STEP 1: CREDENTIALS --- */
               <>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <button
-                    type="button"
-                    className="flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 text-sm font-medium"
-                  >
+                {/* Social */}
+                <div className="grid grid-cols-2 gap-4">
+                  <button className="flex items-center justify-center gap-2 py-3 border rounded-xl">
                     <FaChrome /> Google
                   </button>
-                  <button
-                    type="button"
-                    className="flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 text-sm font-medium"
-                  >
+                  <button className="flex items-center justify-center gap-2 py-3 border rounded-xl">
                     <FaGithub /> GitHub
                   </button>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                      size={18}
-                    />
-                    <input
-                      name="userName"
-                      value={form.userName}
-                      onChange={handleChange}
-                      required
-                      type="text"
-                      placeholder="John Doe"
-                      className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm"
-                    />
-                  </div>
-                </div>
+                {/* Name */}
+                <Input
+                  icon={<User />}
+                  name="userName"
+                  placeholder="Full Name"
+                  value={form.userName}
+                  onChange={handleChange}
+                />
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Mail
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                      size={18}
-                    />
-                    <input
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      required
-                      type="email"
-                      placeholder="name@company.com"
-                      className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm"
-                    />
-                  </div>
-                </div>
+                {/* Email */}
+                <Input
+                  icon={<Mail />}
+                  name="email"
+                  placeholder="Email"
+                  value={form.email}
+                  onChange={handleChange}
+                />
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Lock
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                      size={18}
-                    />
-                    <input
-                      name="password"
-                      value={form.password}
-                      onChange={handleChange}
-                      required
-                      type="password"
-                      placeholder="••••••••"
-                      className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm"
-                    />
-                  </div>
-                </div>
+                {/* Password */}
+                <Input
+                  icon={<Lock />}
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange}
+                />
               </>
             ) : (
-              /* --- STEP 2: BIO & GENDER --- */
-              <div className="animate-in fade-in slide-in-from-right-4 duration-300">
+              <div className="space-y-6">
+                {/* BACK */}
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex items-center gap-1 text-slate-400 text-xs mb-4 hover:text-orange-600 transition-colors"
+                  className="flex items-center gap-1 text-sm text-gray-400 hover:text-orange-500"
                 >
-                  <ArrowLeft size={14} /> Back to credentials
+                  <ArrowLeft size={14} /> Back
                 </button>
 
-                <div className="mb-6">
-                  <label className="block text-[10px] font-bold uppercase text-slate-500 mb-3">
-                    Gender
-                  </label>
-                  <div className="flex gap-4">
-                    {["Male", "Female", "Other"].map((opt) => (
-                      <label
-                        key={opt}
-                        className="flex items-center gap-2 cursor-pointer border px-4 py-2 rounded-xl border-slate-200 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 transition-all"
-                      >
-                        <input
-                          type="radio"
-                          name="gender"
-                          value={opt.toLowerCase()}
-                          onChange={handleChange}
-                          required
-                          className="hidden"
-                        />
-                        <span className="text-sm text-slate-600">{opt}</span>
-                      </label>
-                    ))}
+                {/* AVATAR */}
+                <div className="flex flex-col items-center">
+                  <div className="relative group">
+                    <img
+                      src={form.avatarPreview || "https://i.pravatar.cc/150"}
+                      className="w-24 h-24 rounded-full object-cover border-4 border-orange-100"
+                    />
+
+                    <label className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer">
+                      <span className="text-white text-xs">Change</span>
+                      <input
+                        type="file"
+                        onChange={handleAvatarChange}
+                        className="hidden"
+                      />
+                    </label>
                   </div>
+
+                  <p className="text-xs text-gray-400 mt-2">Upload avatar</p>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase text-slate-500 mb-2 ml-1">
-                    About You (Bio)
-                  </label>
-                  <div className="relative">
-                    <AlignLeft
-                      className="absolute left-4 top-4 text-slate-400"
-                      size={18}
-                    />
-                    <textarea
-                      name="bio"
-                      value={form.bio}
-                      onChange={handleChange}
-                      placeholder="Share your story..."
-                      rows="4"
-                      className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm resize-none"
-                    />
-                  </div>
+                {/* Gender */}
+                <div className="flex gap-4">
+                  {["male", "female", "other"].map((g) => (
+                    <label
+                      key={g}
+                      className="border px-4 py-2 rounded-xl cursor-pointer has-[:checked]:bg-orange-100 has-[:checked]:border-orange-500"
+                    >
+                      <input
+                        type="radio"
+                        name="gender"
+                        value={g}
+                        onChange={handleChange}
+                        className="hidden"
+                      />
+                      {g}
+                    </label>
+                  ))}
+                </div>
+
+                {/* Bio */}
+                <div className="relative">
+                  <AlignLeft className="absolute left-3 top-3 text-gray-400" />
+                  <textarea
+                    name="bio"
+                    value={form.bio}
+                    onChange={handleChange}
+                    className="w-full pl-10 py-3 border rounded-xl"
+                    placeholder="Your bio..."
+                  />
                 </div>
               </div>
             )}
-            
 
-            <button
-              type="submit"
-              className="w-full py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2"
-            >
-              {step === 1 ? "Continue" : "Complete Registration"}
+            {/* SUBMIT */}
+            <button className="w-full py-3 bg-orange-500 text-white rounded-xl flex items-center justify-center gap-2">
+              {step === 1 ? "Continue" : "Register"}
               <ArrowRight size={18} />
             </button>
           </form>
 
+          {/* LOGIN LINK */}
           {step === 1 && (
-            <Link
-              to="/login"
-              className="mt-8 text-center text-sm text-slate-500"
-            >
+            <Link to="/login" className="text-sm text-center mt-6">
               Already have an account?{" "}
-              <span className="text-orange-600 font-bold hover:underline">
-                Log In
-              </span>
+              <span className="text-orange-500 font-bold">Login</span>
             </Link>
           )}
         </div>
@@ -248,3 +234,16 @@ const Register = () => {
 };
 
 export default Register;
+
+// 🔹 Reusable Input
+const Input = ({ icon, ...props }) => (
+  <div className="relative">
+    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+      {icon}
+    </div>
+    <input
+      {...props}
+      className="w-full pl-10 pr-4 py-3 border rounded-xl outline-none"
+    />
+  </div>
+);
