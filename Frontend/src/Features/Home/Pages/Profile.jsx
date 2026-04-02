@@ -4,17 +4,17 @@ import { usePost } from "../Hooks/useHome";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
-  const { posts, loading } = useSelector((state) => state.post);
+  const { userPosts, loading } = useSelector((state) => state.post);
   const { handleGetUserPosts } = usePost();
-  console.log(user)
+
+  console.log(user);
   useEffect(() => {
     if (user?._id) {
       handleGetUserPosts(user._id);
     }
-  }, []);
-  console.log(user);
-  const token=localStorage.getItem('token')
-  if (!token) {
+  }, [user?._id]);
+  const token = localStorage.getItem("token");
+  if (!token || !user) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">User not found</p>
@@ -40,7 +40,7 @@ const Profile = () => {
             {user.bio && <p className="text-gray-700 mt-2">{user.bio}</p>}
             <div className="flex gap-6 mt-4 text-sm">
               <span className="text-gray-600">
-                <strong>{posts?.length || 0}</strong> Projects
+                <strong>{userPosts?.length || 0}</strong> Projects
               </span>
               <span className="text-gray-600">
                 <strong>{user.followers?.length || 0}</strong> Followers
@@ -63,13 +63,13 @@ const Profile = () => {
                 <p className="text-gray-600">Loading projects...</p>
               </div>
             </div>
-          ) : !posts || posts.length === 0 ? (
+          ) : !userPosts || userPosts.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg">
               <p className="text-gray-500">No projects yet. Start creating!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.filter(post => post && post._id).map((post) => (
+              {userPosts.filter(post => post && post._id).map((post) => (
                 <div
                   key={post._id}
                   className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
