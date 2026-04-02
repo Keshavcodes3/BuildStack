@@ -12,8 +12,8 @@ App.use(cors({
 }))
 
 //&Import routes
-import userRoutes from './Routes/user.routes'
-import postRoutes from './Routes/post.routes'
+import userRoutes from './Routes/user.routes.js'
+import postRoutes from './Routes/post.routes.js'
 import commentRoutes from './Routes/comment.routes.js'
 
 
