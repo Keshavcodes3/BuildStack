@@ -7,12 +7,7 @@ const api = axios.create({
 
 
 export const addPost = async (postData) => {
-    const formData = new FormData()
-    formData.append("caption", postData.caption);
-    formData.append("visibility", postData.visibility);
-    formData.append("tags", postData.tags)
-    formData.append("media", postData.media)
-    const response = await api.post("/createProject", formData, {
+    const response = await api.post("/createProject", postData, {
         headers: { 'Content-Type': 'multipart/form-data' }
     })
     return response.data

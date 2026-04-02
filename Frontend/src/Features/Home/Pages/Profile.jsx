@@ -6,15 +6,15 @@ const Profile = () => {
   const { user } = useSelector((state) => state.auth);
   const { posts, loading } = useSelector((state) => state.post);
   const { handleGetUserPosts } = usePost();
-
+  console.log(user)
   useEffect(() => {
     if (user?._id) {
       handleGetUserPosts(user._id);
     }
-  }, [user]);
-  console.log(posts);
-
-  if (!user) {
+  }, []);
+  console.log(user);
+  const token=localStorage.getItem('token')
+  if (!token) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">User not found</p>
@@ -69,7 +69,7 @@ const Profile = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
+              {posts.filter(post => post && post._id).map((post) => (
                 <div
                   key={post._id}
                   className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"

@@ -15,9 +15,10 @@ const useAuth = () => {
       dispatch(setLoading(true));
       const data = await register(userData);
       if (data.success) {
+        localStorage.setItem("token", data.token);
         dispatch(setUser(data.user));
         dispatch(setError(null));
-        return data
+        return data;
       } else {
         dispatch(
           setError(
@@ -31,68 +32,62 @@ const useAuth = () => {
           err?.message || "Something went wrong during registering user",
         ),
       );
-    }finally{
-        dispatch(setLoading(false))
+    } finally {
+      dispatch(setLoading(false));
     }
   };
-   const handleLoginUser = async (userData) => {
+  const handleLoginUser = async (userData) => {
     try {
       dispatch(setLoading(true));
       const data = await login(userData);
       if (data.success) {
+        localStorage.setItem("token", data.token);
+
         dispatch(setUser(data.user));
         dispatch(setError(null));
-        return data
+        return data;
       } else {
         dispatch(
-          setError(
-            data?.error || "Something went wrong during loggin in user",
-          ),
+          setError(data?.error || "Something went wrong during loggin in user"),
         );
       }
     } catch (err) {
       dispatch(
-        setError(
-          err?.message || "Something went wrong during loggin in user",
-        ),
+        setError(err?.message || "Something went wrong during loggin in user"),
       );
-    }finally{
-        dispatch(setLoading(false))
+    } finally {
+      dispatch(setLoading(false));
     }
   };
-  const handleGetProfile= async () => {
+  const handleGetProfile = async () => {
     try {
       dispatch(setLoading(true));
       const data = await getProfile();
       if (data.success) {
         dispatch(setUser(data.user));
         dispatch(setError(null));
-        return data
+        return data;
       } else {
         dispatch(
-          setError(
-            data?.error || "Something went wrong during fetchin user",
-          ),
+          setError(data?.error || "Something went wrong during fetchin user"),
         );
       }
     } catch (err) {
       dispatch(
-        setError(
-          err?.message || "Something went wrong during fetchin user",
-        ),
+        setError(err?.message || "Something went wrong during fetchin user"),
       );
-    }finally{
-        dispatch(setLoading(false))
+    } finally {
+      dispatch(setLoading(false));
     }
   };
-  const handleUpdateProfile= async (userData) => {
+  const handleUpdateProfile = async (userData) => {
     try {
       dispatch(setLoading(true));
       const data = await updateProfile(userData);
       if (data.success) {
         dispatch(setUser(data.user));
         dispatch(setError(null));
-        return data
+        return data;
       } else {
         dispatch(
           setError(
@@ -106,11 +101,11 @@ const useAuth = () => {
           err?.message || "Something went wrong during updating profile",
         ),
       );
-    }finally{
-        dispatch(setLoading(false))
+    } finally {
+      dispatch(setLoading(false));
     }
   };
-  
+
   const handleLogout = async () => {
     try {
       dispatch(setLoading(true));
@@ -118,29 +113,24 @@ const useAuth = () => {
       if (data.success) {
         dispatch(setUser(null));
         dispatch(setError(null));
-        return data
+        return data;
       } else {
-        dispatch(
-          setError(
-            data?.error || "Something went wrong during logout",
-          ),
-        );
+        dispatch(setError(data?.error || "Something went wrong during logout"));
       }
     } catch (err) {
-      dispatch(
-        setError(
-          err?.message || "Something went wrong during logout",
-        ),
-      );
-    }finally{
-        dispatch(setLoading(false))
+      dispatch(setError(err?.message || "Something went wrong during logout"));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
-  
-  return {handleGetProfile,handleLoginUser,handleRegisterUser,handleUpdateProfile,handleLogout}
+
+  return {
+    handleGetProfile,
+    handleLoginUser,
+    handleRegisterUser,
+    handleUpdateProfile,
+    handleLogout,
+  };
 };
 
-
-export default useAuth
-
-
+export default useAuth;

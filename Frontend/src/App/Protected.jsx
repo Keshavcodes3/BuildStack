@@ -4,7 +4,8 @@ import { Navigate } from "react-router-dom";
 
 const Protected = ({ children }) => {
   const { user, loading } = useSelector((state) => state.auth);
-
+  const token = localStorage.getItem("token");
+  
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
@@ -16,7 +17,7 @@ const Protected = ({ children }) => {
     );
   }
 
-  if (!user) {
+  if (!token || !user) {
     return <Navigate to="/login" replace />;
   }
 

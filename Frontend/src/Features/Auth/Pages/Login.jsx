@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Mail, Lock, HelpCircle } from "lucide-react";
 import { FaGithub, FaChrome } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth  from "../Hooks/useAuth";
+import useAuth from "../Hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,10 +29,10 @@ const Login = () => {
     try {
       // Assuming handleLogin takes (email, password) or a data object
       const success = await handleLoginUser(formData);
-      if(success){
-        navigate('/home')
+      if (success) {
+        
+        navigate("/home");
       }
-      
     } catch (error) {
       console.error("Login failed:", error);
     }

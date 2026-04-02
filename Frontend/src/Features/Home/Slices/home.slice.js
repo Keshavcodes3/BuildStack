@@ -19,13 +19,13 @@ const postSlice = createSlice({
         },
 
         setPosts: (state, action) => {
-            state.posts = action.payload;
+            state.posts = action.payload?.filter(post => post && post._id) || [];
         },
         addPostToState: (state, action) => {
             state.posts.unshift(action.payload)
         },
         setUserPosts: (state, action) => {
-            state.userPosts = action.payload;
+            state.userPosts = action.payload?.filter(post => post && post._id) || [];
         },
 
         setSinglePost: (state, action) => {
@@ -33,14 +33,16 @@ const postSlice = createSlice({
         },
         updatePosts: (state, action) => {
             const updated = action.payload
-            state.posts = state.posts.map((post) =>
-                post._id === updated._id ? updated : post
-            )
-            state.userPosts = state.userPosts.map((post) =>
-                post._id === updated._id ? updated : post
-            );
-            if (state.singlePost?._id === updated._id) {
-                state.singlePost = updated;
+            if (updated && updated._id) {
+                state.posts = state.posts.map((post) =>
+                    post && post._id === updated._id ? updated : post
+                )
+                state.userPosts = state.userPosts.map((post) =>
+                    post && post._id === updated._id ? updated : post
+                );
+                if (state.singlePost && state.singlePost._id === updated._id) {
+                    state.singlePost = updated;
+                }
             }
         }
     }

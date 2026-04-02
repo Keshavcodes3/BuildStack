@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { Home, Compass, User, X, LogOut } from "lucide-react";
+import { Home, Compass, User, X, LogOut, Plus } from "lucide-react";
 import useAuth from "../../Auth/Hooks/useAuth";
 
-const Sidebar = ({ isOpen, setSidebarOpen }) => {
+const Sidebar = ({ isOpen, setSidebarOpen, onCreatePostClick }) => {
   const { handleLogout } = useAuth();
   const navigate = useNavigate();
 
@@ -40,9 +40,21 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
         </div>
 
         {/* Logo */}
-        <h1 className="hidden lg:block text-2xl font-black mb-10 bg-gradient-to-r from-violet-600 to-purple-500 bg-clip-text text-transparent">
+        <h1 className="hidden lg:block text-2xl font-black mb-8 bg-gradient-to-r from-violet-600 to-purple-500 bg-clip-text text-transparent">
           BuildStack
         </h1>
+
+        {/* Create Post Button */}
+        <button
+          onClick={() => {
+            onCreatePostClick?.();
+            setSidebarOpen(false);
+          }}
+          className="w-full mb-6 bg-gradient-to-r from-violet-600 to-purple-500 hover:shadow-lg hover:from-violet-700 hover:to-purple-600 text-white font-bold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md"
+        >
+          <Plus size={20} />
+          Create Project
+        </button>
 
         {/* Nav */}
         <nav className="flex flex-col gap-2 flex-1">

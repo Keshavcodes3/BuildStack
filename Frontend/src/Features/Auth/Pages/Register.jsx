@@ -39,6 +39,7 @@ const Register = () => {
     }
     try {
       const data = await handleRegisterUser(form);
+
     } catch (error) {
       console.error("Registration failed:", error);
     }
