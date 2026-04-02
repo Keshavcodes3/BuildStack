@@ -39,6 +39,7 @@ import { uploadToCloudinary } from "../Utils/uploadToCloudinary.js";
 export const registerUserController = async (req, res) => {
     try {
         const { userName, password, email, gender, bio } = req.body;
+        console.log(req.body)
 
         // 🔍 Check existing user
         const isAlreadyExist = await userModel.findOne({
