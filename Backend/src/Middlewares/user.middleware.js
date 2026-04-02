@@ -1,5 +1,5 @@
-import blackListModel from "../Models/blackListModel";
-import userModel from "../Models/user.model";
+import blackListModel from "../Models/blackListModel.js";
+import userModel from "../Models/user.model.js";
 import jwt from 'jsonwebtoken'
 export const IdentifyUser = async (req, res, next) => {
     let decoded;

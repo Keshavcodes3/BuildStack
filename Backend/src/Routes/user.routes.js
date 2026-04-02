@@ -1,8 +1,8 @@
 import express from 'express'
-import { registerUserController, loginContoller, logoutUserController, getUserProfileController, updateUserProfileController } from '../Controllers/user.controller'
-import { loginValidator, registerValidator } from '../Validators/user.validator'
-import { validate } from '../Middlewares/validate'
-import { IdentifyUser } from '../Middlewares/user.middleware'
+import { registerUserController, loginContoller, logoutUserController, getUserProfileController, updateUserProfileController } from '../Controllers/user.controller.js'
+import { loginValidator, registerValidator } from '../Validators/user.validator.js'
+import { validate } from '../Middlewares/validate.js'
+import { IdentifyUser } from '../Middlewares/user.middleware.js'
 import upload from '../Utils/multer.js'
 const userRoutes = express.Router()
 /*

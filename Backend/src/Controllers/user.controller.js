@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { createUser } from "../Utils/createUser";
-import userModel from "../Models/user.model";
-import blackListModel from "../Models/blackListModel";
-import postModel from "../Models/post.model";
+import { createUser } from "../Utils/createUser.js";
+import userModel from "../Models/user.model.js";
+import blackListModel from "../Models/blackListModel.js";
+import postModel from "../Models/post.model.js";
 
 import { uploadToCloudinary } from "../Utils/uploadToCloudinary.js";
 
