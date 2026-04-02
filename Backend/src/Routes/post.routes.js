@@ -46,6 +46,6 @@ postRoutes.get('/projects/:id/projects', IdentifyUser, getUserProjectsController
 postRoutes.get('/projects/:postId', IdentifyUser, getSingleProjectController)
 
 
-postRoutes.post('like/project/:id', IdentifyUser, likeProjectController)
+postRoutes.post('/like/project/:id', IdentifyUser, likeProjectController)
 
 export default postRoutes 

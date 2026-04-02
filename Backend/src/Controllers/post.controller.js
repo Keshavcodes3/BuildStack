@@ -360,32 +360,32 @@ export const likeProjectController = async (req, res) => {
         })
         //&DisLike if exist
         if (Like) {
-            await Promise.all([
-                likeModel.deleteOne({ _id: existingLike._id }),
-                postModel.findByIdAndUpdate(projectId, {
-                    $inc: { likesCount: -1 }
-                })
-            ])
+            // If like exists -> Remove it (Unlike)
+            await likeModel.deleteOne({ _id: Like._id });
+            await postModel.findByIdAndUpdate(projectId, {
+                $inc: { likesCount: -1 },
+                $pull: { likes: userId } // Keep the array in sync
+            });
+
             return res.status(200).json({
-                message: "Like created successfully",
-                error: null,
+                message: "Unliked successfully",
                 success: true
-            })
+            });
         } else {
-            await Promise.all([
-                likeModel.create({
-                    post: projectId,
-                    user: userId
-                }),
-                postModel.findByIdAndUpdate(projectId, {
-                    $inc: { likesCount: 1 }
-                })
-            ])
+            // If like doesn't exist -> Create it (Like)
+            await likeModel.create({
+                post: projectId,
+                user: userId
+            });
+            await postModel.findByIdAndUpdate(projectId, {
+                $inc: { likesCount: 1 },
+                $push: { likes: userId } // Keep the array in sync
+            });
+
             return res.status(201).json({
-                message: "Like disliked successfully",
-                error: null,
+                message: "Liked successfully",
                 success: true
-            })
+            });
         }
 
     } catch (err) {
