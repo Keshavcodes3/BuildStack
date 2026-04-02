@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+#hidden-bar::-webkit-scrollbar {
+  width: 6px;
+}
+
+#hidden-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#hidden-bar::-webkit-scrollbar-thumb {
+  background: #4350c8; /* orange */
+  border-radius: 10px;
+}
+
+#hidden-bar::-webkit-scrollbar-thumb:hover {
+  background: #4350c8;
+}
+
+/* Firefox */
+#hidden-bar {
+  scrollbar-width: thin;
+  scrollbar-color: #4350c8 transparent;
+}

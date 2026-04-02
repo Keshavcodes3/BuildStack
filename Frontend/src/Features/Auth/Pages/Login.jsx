@@ -29,7 +29,9 @@ const Login = () => {
     try {
       // Assuming handleLogin takes (email, password) or a data object
       const success = await handleLoginUser(formData);
-      console.log(success)
+      if(success){
+        navigate('/home')
+      }
       
     } catch (error) {
       console.error("Login failed:", error);

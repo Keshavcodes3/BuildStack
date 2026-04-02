@@ -4,6 +4,7 @@ import {
   login,
   updateProfile,
   getProfile,
+  logoutUser,
 } from "../Services/auth.service";
 import { useDispatch } from "react-redux";
 
@@ -109,7 +110,34 @@ const useAuth = () => {
         dispatch(setLoading(false))
     }
   };
-  return {handleGetProfile,handleLoginUser,handleRegisterUser,handleUpdateProfile}
+  
+  const handleLogout = async () => {
+    try {
+      dispatch(setLoading(true));
+      const data = await logoutUser();
+      if (data.success) {
+        dispatch(setUser(null));
+        dispatch(setError(null));
+        return data
+      } else {
+        dispatch(
+          setError(
+            data?.error || "Something went wrong during logout",
+          ),
+        );
+      }
+    } catch (err) {
+      dispatch(
+        setError(
+          err?.message || "Something went wrong during logout",
+        ),
+      );
+    }finally{
+        dispatch(setLoading(false))
+    }
+  };
+  
+  return {handleGetProfile,handleLoginUser,handleRegisterUser,handleUpdateProfile,handleLogout}
 };
 
 

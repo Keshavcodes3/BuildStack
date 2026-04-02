@@ -369,7 +369,8 @@ export const likeProjectController = async (req, res) => {
 
             return res.status(200).json({
                 message: "Unliked successfully",
-                success: true
+                success: true,
+                Like
             });
         } else {
             // If like doesn't exist -> Create it (Like)
@@ -384,6 +385,7 @@ export const likeProjectController = async (req, res) => {
 
             return res.status(201).json({
                 message: "Liked successfully",
+                Like,
                 success: true
             });
         }
