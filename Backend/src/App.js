@@ -7,7 +7,7 @@ const App=express()
 App.use(express.json())
 App.use(cookie())
 App.use(cors({
-    origin:'http://localhost:5173',
+    origin:'https://build-stack-alpha.vercel.app',
     credentials:true,
 }))
 
