@@ -1,6 +1,9 @@
 # BuildStack 🚀
 
 **Live Link** : https://build-stack-alpha.vercel.app/login
+
+<br/><br/>
+
 **A social platform for developers to showcase, inspire, and collaborate on projects.**
 
 BuildStack is a developer-focused social application where developers can share their projects, seek feedback, get inspired by others' work, and collaborate on ideas. It combines the social features of Instagram/Twitter with the technical focus of GitHub.
